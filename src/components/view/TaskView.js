@@ -38,7 +38,7 @@ class TaskView extends Component {
     }
 
     render(){
-      
+        console.log(this.props)
         return (
             <li className="list-group-item">
                   { this.state.toggle ? <input 
@@ -47,7 +47,7 @@ class TaskView extends Component {
                     value={this.state.currentState} 
                     style={{textAlign: 'center'}} 
                     onChange={this.handleInputChange.bind(this)}
-                    />  : `Something I need to do: ${this.props.todo.task}` }
+                    />  : `Something I need to do: ${this.props.todo.todo}` }
                 <input 
                     type="button" 
                     className="float-right btn btn-danger btn-sm" 

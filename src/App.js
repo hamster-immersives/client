@@ -29,16 +29,41 @@ class App extends Component {
   }
 
   handleSubmit = (task) => {
-    let newItem = {
-      task: task,
+    
+    let token = localStorage.getItem('jwtToken');
+    const decoded = jwt_decode(token);
+
+    let newTask = {
+      todo: task,
       completed: false, 
-      id: uuidv4()
+      id: decoded.id
     }
-    let currentItem = Object.assign([], this.state.todo);
-    currentItem.push(newItem);
-    this.setState({
-      todo: currentItem
-    })
+
+    let axiosConfig = {
+      headers: {
+        "content-Type": "application/json;charset=UTF-8",
+        "Access-Control-Allow-Origin": "*"
+      }
+    }
+
+    axios.post('http://localhost:3001/todo/createtodo', newTask, axiosConfig)
+      .then(result => {
+        
+        let currentItem = Object.assign([], this.state.todo);
+        currentItem.push(result.data);
+        console.log(result.data)
+        this.setState({
+          todo: currentItem
+        })
+
+      })
+      .catch(err => {
+        console.log(err)
+      })
+
+
+
+
   }
 
   handleDelete = (id) => {

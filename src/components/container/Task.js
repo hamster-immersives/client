@@ -22,10 +22,11 @@ export default class Task extends Component {
     const tasks = this.props.todo;
 
     let task = tasks.map(element => {
+
         return (
             <TaskView 
-								key={element.id}
-								id={element.id}
+								key={element._id}
+								id={element._id}
                 todo={element}
 								handleDelete={this.handleDelete}
                 handleEdit={this.handleEdit}
