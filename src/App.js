@@ -22,9 +22,26 @@ class App extends Component {
           user: null
         })
       }
+
       this.setState({
         user: decoded.email
+      }, () => {
+
+        axios.get(`http://localhost:3001/todo/getalltodos/${decoded.id}`)
+          .then( result => {
+         
+            this.setState({
+              todo: result.data.todos
+            })
+
+          })
+          .catch(err => {
+            console.log(err)
+          })
+
+
       })
+
     }
   }
 
@@ -48,14 +65,11 @@ class App extends Component {
 
     axios.post('http://localhost:3001/todo/createtodo', newTask, axiosConfig)
       .then(result => {
-        
         let currentItem = Object.assign([], this.state.todo);
         currentItem.push(result.data);
-        console.log(result.data)
         this.setState({
           todo: currentItem
         })
-
       })
       .catch(err => {
         console.log(err)

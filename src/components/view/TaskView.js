@@ -38,7 +38,6 @@ class TaskView extends Component {
     }
 
     render(){
-        console.log(this.props)
         return (
             <li className="list-group-item">
                   { this.state.toggle ? <input 
