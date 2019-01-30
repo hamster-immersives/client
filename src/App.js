@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import uuidv4 from 'uuid/v4';
 import axios from 'axios';
+import jwt_decode from 'jwt-decode';
 
 import { Nav, Task, TaskInput } from './components/container';
 
@@ -17,7 +18,8 @@ class App extends Component {
         completed: false,
         id: uuidv4()
       }
-    ]
+    ],
+    user: null
   }
   handleSubmit = (task) => {
     let newItem = {
@@ -70,10 +72,27 @@ class App extends Component {
   }
 
   handleSignUp = (data) => {
-    
-    axios.get('http://localhost:3001/users')
+
+    let axiosConfig = {
+      headers: {
+        "content-Type": "application/json;charset=UTF-8",
+        "Access-Control-Allow-Origin": "*"
+      }
+    }
+
+    axios.post('http://localhost:3001/users/auth', data, axiosConfig)
       .then(result => {
-        console.log(result)
+        
+        let { token } = result.data;
+
+        const decoded = jwt_decode(token);
+
+        localStorage.setItem('jwtToken', token);
+
+        this.setState({
+          user: decoded.email
+        })
+
       })
       .catch(err => {
         console.log(err)
@@ -84,7 +103,10 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Nav handleSignUp={this.handleSignUp} />
+        <Nav 
+          handleSignUp={this.handleSignUp} 
+          user={this.state.user}
+        />
         <TaskInput 
           handleSubmit={this.handleSubmit} 
         />
