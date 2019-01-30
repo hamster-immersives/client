@@ -7,20 +7,27 @@ import { Nav, Task, TaskInput } from './components/container';
 
 class App extends Component {
   state = {
-    todo: [
-      {
-        task: "Buy Milk",
-        completed: false,
-        id: uuidv4()
-      },
-      {
-        task: "Buy Pizza",
-        completed: false,
-        id: uuidv4()
-      }
-    ],
+    todo: [],
     user: null
   }
+
+  componentDidMount() {
+    let token = localStorage.getItem('jwtToken');
+    if (token) {
+      const currentTime = Date.now() / 1000;
+      const decoded = jwt_decode(token);
+      if (decoded.exp < currentTime) {
+        localStorage.removeItem('jwtToken');
+        this.setState({
+          user: null
+        })
+      }
+      this.setState({
+        user: decoded.email
+      })
+    }
+  }
+
   handleSubmit = (task) => {
     let newItem = {
       task: task,
@@ -100,12 +107,20 @@ class App extends Component {
 
   }
 
+  logout = () => {
+    localStorage.removeItem('jwtToken');
+    this.setState({
+      user: null
+    })
+  }
+
   render() {
     return (
       <div>
         <Nav 
           handleSignUp={this.handleSignUp} 
           user={this.state.user}
+          logout={this.logout}
         />
         <TaskInput 
           handleSubmit={this.handleSubmit} 

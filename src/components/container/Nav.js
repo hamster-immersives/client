@@ -18,13 +18,20 @@ export default class Nav extends Component {
 
         this.props.handleSignUp(this.state);
     }
+    
+    logout = () => {
+        this.props.logout();
+    }
 
   render() {
 
     let isAuth;
 
     if (this.props.user ) {
-        isAuth = (<div>{this.props.user}</div> )
+        isAuth = (<div>
+                    <span style={{marginRight: 10}}>{this.props.user}</span>
+                    <input onClick={this.logout} type="button" className="btn btn-primary mb-2" value="logout" />
+                 </div> )
     } else {
         isAuth = (
             <form className="form-inline" onSubmit={this.handleSubmit} ref={(node) => this.form = node}>
