@@ -38,6 +38,7 @@ class TaskView extends Component {
     }
 
     render(){
+
         return (
             <li className="list-group-item">
                   { this.state.toggle ? <input 
@@ -52,7 +53,7 @@ class TaskView extends Component {
                     className="float-right btn btn-danger btn-sm" 
                     value="delete" 
                     style={{textAlign: 'center', marginLeft: 5}} 
-                    onClick={this.handleDelete.bind(this, this.props.todo.id)}
+                    onClick={this.handleDelete.bind(this, this.props.todo._id)}
                     />
                 <input 
                     type="button" 

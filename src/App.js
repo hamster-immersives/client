@@ -26,23 +26,24 @@ class App extends Component {
       this.setState({
         user: decoded.email
       }, () => {
-
-        axios.get(`http://localhost:3001/todo/getalltodos/${decoded.id}`)
-          .then( result => {
-         
-            this.setState({
-              todo: result.data.todos
-            })
-
-          })
-          .catch(err => {
-            console.log(err)
-          })
-
-
+        this.handleGetData(decoded.id)
       })
 
     }
+  }
+
+  handleGetData = (decodedID) => {
+    axios.get(`http://localhost:3001/todo/getalltodos/${decodedID}`)
+    .then( result => {
+      console.log(result.data.todos)
+      this.setState({
+        todo: result.data.todos
+      })
+
+    })
+    .catch(err => {
+      console.log(err)
+    })
   }
 
   handleSubmit = (task) => {
@@ -81,9 +82,11 @@ class App extends Component {
   }
 
   handleDelete = (id) => {
+
     let updated = Object.assign([], this.state.todo);
+
     let updatedList = updated.filter((task) => 
-      task.id !== id
+      task._id !== id
     );
     this.setState({
       todo: updatedList
